@@ -14,6 +14,15 @@ volatile uint16_t middle[Num_of_Results];
 volatile uint16_t ring[Num_of_Results];
 volatile uint16_t pinky[Num_of_Results];
 
+volatile uint16_t pointersum;
+volatile uint16_t middlesum;
+volatile uint16_t ringsum;
+volatile uint16_t pinkysum;
+
+volatile uint16_t pointerval;
+volatile uint16_t middleval;
+volatile uint16_t ringval;
+volatile uint16_t pinkyval;
 
 void main(void)
 {

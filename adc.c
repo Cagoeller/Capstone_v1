@@ -15,6 +15,15 @@ extern volatile uint16_t middle[Num_of_Results];
 extern volatile uint16_t ring[Num_of_Results];
 extern volatile uint16_t pinky[Num_of_Results];
 
+extern volatile uint16_t pointersum;
+extern volatile uint16_t middlesum;
+extern volatile uint16_t ringsum;
+extern volatile uint16_t pinkysum;
+extern volatile uint16_t pointerval;
+extern volatile uint16_t middleval;
+extern volatile uint16_t ringval;
+extern volatile uint16_t pinkyval;
+
 
 void ConfigureADC(void){
 	 //P5->SEL1 |= BIT5 | BIT4 | BIT3 |BIT2;   // Enable A/D channel A0-A3
@@ -61,11 +70,27 @@ void ConfigureADC(void){
 void ADC14_IRQHandler(void){
     if (ADC14->IFGR0 & ADC14_IFGR0_IFG3)
     {
+    	//implementing a simple circle filter
         pointer[index] = ADC14->MEM[0];   // Move A0 results, IFG is cleared
         middle[index] = ADC14->MEM[1];   // Move A1 results, IFG is cleared
         ring[index] = ADC14->MEM[2];   // Move A2 results, IFG is cleared
         pinky[index] = ADC14->MEM[3];   // Move A3 results, IFG is cleared
+        pointersum += pointer[index];
+        middlesum += middle[index];
+        ringsum += ring[index];
+        pinkysum += pinky[index];
+
         index = (index + 1) & 0x7;          // Increment results index, modulo
+
+        pointersum 	-= pointer[index];
+        middlesum  	-= middle[index];
+        ringsum    	-= ring[index];
+        pinkysum 	-= pinky[index];
+
+        pointerval 	= pointersum	>>3;
+        middleval 	= middlesum 	>>3;
+        ringval		= ringsum 		>>3;
+        pinkyval	= pinkysum		>>3;
     }
 }
 
