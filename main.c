@@ -8,6 +8,13 @@
 #include "adc.h"
 #include <stdint.h>
 
+
+volatile uint16_t pointer[Num_of_Results];
+volatile uint16_t middle[Num_of_Results];
+volatile uint16_t ring[Num_of_Results];
+volatile uint16_t pinky[Num_of_Results];
+
+
 void main(void)
 {
 	

@@ -9,16 +9,20 @@
 #include "msp.h"
 #include "adc.h"
 
-volatile uint16_t A0results[Num_of_Results];
-volatile uint16_t A1results[Num_of_Results];
-volatile uint16_t A2results[Num_of_Results];
-volatile uint16_t A3results[Num_of_Results];
 static uint8_t index;
+extern volatile uint16_t pointer[Num_of_Results];
+extern volatile uint16_t middle[Num_of_Results];
+extern volatile uint16_t ring[Num_of_Results];
+extern volatile uint16_t pinky[Num_of_Results];
+
 
 void ConfigureADC(void){
-	 P5->SEL1 |= BIT5 | BIT4 | BIT3 |BIT2;   // Enable A/D channel A0-A3
-	 P5->SEL0 |= BIT5 | BIT4 | BIT3 |BIT2;
-
+	 //P5->SEL1 |= BIT5 | BIT4 | BIT3 |BIT2;   // Enable A/D channel A0-A3
+	 //P5->SEL0 |= BIT5 | BIT4 | BIT3 |BIT2;
+		P6->SEL1 |= BIT1;
+		P6->SEL0 |= BIT1;
+		P4->SEL1 |= BIT0 | BIT2 | BIT4;
+		P4->SEL0 |= BIT0 | BIT2 | BIT4;
 	    // Enable global interrupt
 	    __enable_irq();
 
@@ -32,10 +36,18 @@ void ConfigureADC(void){
 	            ADC14_CTL0_SHP |
 	            ADC14_CTL0_CONSEQ_3;
 
-	    ADC14->MCTL[0] = ADC14_MCTLN_INCH_0;    // ref+=AVcc, channel = A0				P5.5
-	    ADC14->MCTL[1] = ADC14_MCTLN_INCH_1;    // ref+=AVcc, channel = A1				P5.4
-	    ADC14->MCTL[2] = ADC14_MCTLN_INCH_2;    // ref+=AVcc, channel = A2				P5.3
-	    ADC14->MCTL[3] = ADC14_MCTLN_INCH_3|    // ref+=AVcc, channel = A3, end seq.	P5.2
+
+	    /*
+	     * current pins
+	     * P6.1 -> A14 (4)
+	     * P4.0 -> A13 (3)
+	     * P4.2 -> A11 (2)
+	     * P4.4 -> A9  (1)
+	     */
+	    ADC14->MCTL[0] = ADC14_MCTLN_INCH_9;    // ref+=AVcc, channel =  A9				PP4.4
+	    ADC14->MCTL[1] = ADC14_MCTLN_INCH_11;    // ref+=AVcc, channel = A11			P4.2
+	    ADC14->MCTL[2] = ADC14_MCTLN_INCH_13;    // ref+=AVcc, channel = A13			P4.0
+	    ADC14->MCTL[3] = ADC14_MCTLN_INCH_14|    // ref+=AVcc, channel = A14, end seq.	P14
 	            ADC14_MCTLN_EOS;
 
 	    ADC14->IER0 = ADC14_IER0_IE3;           // Enable ADC14IFG.3
@@ -49,12 +61,11 @@ void ConfigureADC(void){
 void ADC14_IRQHandler(void){
     if (ADC14->IFGR0 & ADC14_IFGR0_IFG3)
     {
-        A0results[index] = ADC14->MEM[0];   // Move A0 results, IFG is cleared
-        A1results[index] = ADC14->MEM[1];   // Move A1 results, IFG is cleared
-        A2results[index] = ADC14->MEM[2];   // Move A2 results, IFG is cleared
-        A3results[index] = ADC14->MEM[3];   // Move A3 results, IFG is cleared
+        pointer[index] = ADC14->MEM[0];   // Move A0 results, IFG is cleared
+        middle[index] = ADC14->MEM[1];   // Move A1 results, IFG is cleared
+        ring[index] = ADC14->MEM[2];   // Move A2 results, IFG is cleared
+        pinky[index] = ADC14->MEM[3];   // Move A3 results, IFG is cleared
         index = (index + 1) & 0x7;          // Increment results index, modulo
-        __no_operation();                   // Set Breakpoint1 here
     }
 }
 

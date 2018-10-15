@@ -142,7 +142,7 @@ all: Crapstone_v1.out
 Crapstone_v1.out: $(OBJS) $(CMD_SRCS) $(GEN_CMDS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: MSP432 Linker'
-	"C:/ti/ccsv6/tools/compiler/ti-cgt-arm_15.12.7.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=FPv4SPD16 -me --advice:power=all -g --gcc --define=__MSP432P401R__ --define=TARGET_IS_MSP432P4XX --define=ccs --diag_wrap=off --diag_warning=225 --display_error_number --abi=eabi -z -m"Crapstone_v1.map" --stack_size=512 --heap_size=1024 -i"C:/ti/ccsv6/ccs_base/arm/include" -i"C:/ti/ccsv6/tools/compiler/ti-cgt-arm_15.12.7.LTS/lib" -i"C:/ti/ccsv6/tools/compiler/ti-cgt-arm_15.12.7.LTS/include" --reread_libs --diag_wrap=off --warn_sections --display_error_number --xml_link_info="Crapstone_v1_linkInfo.xml" --rom_model -o "Crapstone_v1.out" $(ORDERED_OBJS)
+	"C:/ti/ccsv6/tools/compiler/ti-cgt-arm_15.12.7.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=FPv4SPD16 -me --advice:power=all -g --gcc --define=__MSP432P401R__ --define=TARGET_IS_MSP432P4XX --define=ccs --display_error_number --diag_wrap=off --diag_warning=225 --abi=eabi -z -m"Crapstone_v1.map" --stack_size=512 --heap_size=1024 -i"C:/ti/ccsv6/ccs_base/arm/include" -i"C:/ti/ccsv6/tools/compiler/ti-cgt-arm_15.12.7.LTS/lib" -i"C:/ti/ccsv6/tools/compiler/ti-cgt-arm_15.12.7.LTS/include" --reread_libs --display_error_number --warn_sections --diag_wrap=off --xml_link_info="Crapstone_v1_linkInfo.xml" --rom_model -o "Crapstone_v1.out" $(ORDERED_OBJS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 

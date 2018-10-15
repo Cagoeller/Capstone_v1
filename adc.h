@@ -13,6 +13,7 @@
 
 #define   Num_of_Results   8
 
+
 void ConfigureADC(void);
 
 void ADC14_IRQHandler(void);
