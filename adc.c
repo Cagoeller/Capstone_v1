@@ -9,20 +9,20 @@
 #include "msp.h"
 #include "adc.h"
 
-static uint8_t index;
-extern volatile uint16_t pointer[Num_of_Results];
-extern volatile uint16_t middle[Num_of_Results];
-extern volatile uint16_t ring[Num_of_Results];
-extern volatile uint16_t pinky[Num_of_Results];
+static unsigned int index;
+extern volatile unsigned int pointer[Num_of_Results];
+extern volatile unsigned int middle[Num_of_Results];
+extern volatile unsigned int ring[Num_of_Results];
+extern volatile unsigned int pinky[Num_of_Results];
 
-extern volatile uint16_t pointersum;
-extern volatile uint16_t middlesum;
-extern volatile uint16_t ringsum;
-extern volatile uint16_t pinkysum;
-extern volatile uint16_t pointerval;
-extern volatile uint16_t middleval;
-extern volatile uint16_t ringval;
-extern volatile uint16_t pinkyval;
+extern volatile unsigned int pointersum;
+extern volatile unsigned int middlesum;
+extern volatile unsigned int ringsum;
+extern volatile unsigned int pinkysum;
+extern volatile unsigned int pointerval;
+extern volatile unsigned int middleval;
+extern volatile unsigned int ringval;
+extern volatile unsigned int pinkyval;
 
 
 void ConfigureADC(void){
@@ -56,7 +56,7 @@ void ConfigureADC(void){
 	    ADC14->MCTL[0] = ADC14_MCTLN_INCH_9;    // ref+=AVcc, channel =  A9				PP4.4
 	    ADC14->MCTL[1] = ADC14_MCTLN_INCH_11;    // ref+=AVcc, channel = A11			P4.2
 	    ADC14->MCTL[2] = ADC14_MCTLN_INCH_13;    // ref+=AVcc, channel = A13			P4.0
-	    ADC14->MCTL[3] = ADC14_MCTLN_INCH_14|    // ref+=AVcc, channel = A14, end seq.	P14
+	    ADC14->MCTL[3] = ADC14_MCTLN_INCH_14|    // ref+=AVcc, channel = A14, end seq.	P6.1
 	            ADC14_MCTLN_EOS;
 
 	    ADC14->IER0 = ADC14_IER0_IE3;           // Enable ADC14IFG.3
@@ -75,6 +75,7 @@ void ADC14_IRQHandler(void){
         middle[index] = ADC14->MEM[1];   // Move A1 results, IFG is cleared
         ring[index] = ADC14->MEM[2];   // Move A2 results, IFG is cleared
         pinky[index] = ADC14->MEM[3];   // Move A3 results, IFG is cleared
+
         pointersum += pointer[index];
         middlesum += middle[index];
         ringsum += ring[index];
@@ -82,15 +83,17 @@ void ADC14_IRQHandler(void){
 
         index = (index + 1) & 0x7;          // Increment results index, modulo
 
+        pointerval 	= pointersum	>>3;
+        middleval 	= middlesum 	>>3;
+        ringval		= ringsum 		>>3;
+        pinkyval	= pinkysum		>>3;
+
         pointersum 	-= pointer[index];
         middlesum  	-= middle[index];
         ringsum    	-= ring[index];
         pinkysum 	-= pinky[index];
 
-        pointerval 	= pointersum	>>3;
-        middleval 	= middlesum 	>>3;
-        ringval		= ringsum 		>>3;
-        pinkyval	= pinkysum		>>3;
+
     }
 }
 
