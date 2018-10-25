@@ -14,7 +14,7 @@
 /* Our DAC is the LTC2614, with a precision of 14 bits
  *
  * message broken into 4 bits of the command, 4 bit address then
- * 14 data bits with 2 don't care bits
+ * 14 data bits with 2 don't care bits (24 total bits)
  * everything is read on the rising edge of the SCLK
  *
  * cs/LD must be low in order to load in command, switch to high to execute command
