@@ -30,9 +30,10 @@
 
 void initializeSPIDAC(void);
 
-void sendByte(unsigned int val);
+void sendByteDAC(unsigned int val);
 
-
+void sendDACinfo(unsigned int throttle, unsigned int yaw,
+		unsigned int roll, unsigned int pitch);
 
 
 #endif /* DAC_H_ */

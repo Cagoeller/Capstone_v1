@@ -11,6 +11,7 @@ GEN_CMDS__FLAG :=
 
 ORDERED_OBJS += \
 "./adc.obj" \
+"./dac.obj" \
 "./main.obj" \
 "./startup_msp432p401r_ccs.obj" \
 "./system_msp432p401r.obj" \
@@ -155,8 +156,8 @@ Crapstone_v1.hex: $(EXE_OUTPUTS)
 # Other Targets
 clean:
 	-$(RM) $(EXE_OUTPUTS__QUOTED)$(BIN_OUTPUTS__QUOTED)
-	-$(RM) "adc.d" "main.d" "startup_msp432p401r_ccs.d" "system_msp432p401r.d" 
-	-$(RM) "adc.obj" "main.obj" "startup_msp432p401r_ccs.obj" "system_msp432p401r.obj" 
+	-$(RM) "adc.d" "dac.d" "main.d" "startup_msp432p401r_ccs.d" "system_msp432p401r.d" 
+	-$(RM) "adc.obj" "dac.obj" "main.obj" "startup_msp432p401r_ccs.obj" "system_msp432p401r.obj" 
 	-@echo 'Finished clean'
 	-@echo ' '
 
