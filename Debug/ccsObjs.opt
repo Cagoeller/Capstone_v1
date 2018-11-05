@@ -1,1 +1,1 @@
-"./adc.obj" "./dac.obj" "./main.obj" "./startup_msp432p401r_ccs.obj" "./system_msp432p401r.obj" "../msp432p401r.cmd" -llibc.a 
+"./adc.obj" "./cpu.obj" "./dac.obj" "./gpio.obj" "./interrupt.obj" "./main.obj" "./spi.obj" "./startup_msp432p401r_ccs.obj" "./system_msp432p401r.obj" "../msp432p401r.cmd" "../ccs/msp432p4xx_driverlib.lib" -llibc.a 

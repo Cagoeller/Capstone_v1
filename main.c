@@ -6,6 +6,8 @@
 
 #include "msp.h"
 #include "adc.h"
+#include "dac.h"
+#include "spi.h"
 #include <stdint.h>
 
 
@@ -19,23 +21,37 @@ volatile unsigned int middlesum;
 volatile unsigned int ringsum;
 volatile unsigned int pinkysum;
 
+
 volatile unsigned int pointerval;
 volatile unsigned int middleval;
 volatile unsigned int ringval;
 volatile unsigned int pinkyval;
+
+
 
 void main(void)
 {
 	
     WDTCTL = WDTPW | WDTHOLD;           // Stop watchdog timer
 	ConfigureADC();
+
+	initializeSPIDAC();
+	//sendByteDAC(0x55);
     __enable_irq();
 
     while(1){
-    	 ADC14->CTL0 |= ADC14_CTL0_ENC |
-    	     ADC14_CTL0_SC;				// Enable the adc and start conversion
+    	//endDACinfo(0x01, 0x05,0x50, 0x3C);
+		//sendByteDAC(0xff);
+		sendByteDAC(0x23);
+//    	 ADC14->CTL0 |= ADC14_CTL0_ENC |
+//    	     ADC14_CTL0_SC;				// Enable the adc and start conversion
     	 //printf(" %d \n", pointerval);
+
     }
 
 
 }
+
+
+
+

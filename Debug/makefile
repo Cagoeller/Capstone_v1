@@ -11,11 +11,16 @@ GEN_CMDS__FLAG :=
 
 ORDERED_OBJS += \
 "./adc.obj" \
+"./cpu.obj" \
 "./dac.obj" \
+"./gpio.obj" \
+"./interrupt.obj" \
 "./main.obj" \
+"./spi.obj" \
 "./startup_msp432p401r_ccs.obj" \
 "./system_msp432p401r.obj" \
 "../msp432p401r.cmd" \
+"../ccs/msp432p4xx_driverlib.lib" \
 $(GEN_CMDS__FLAG) \
 -llibc.a \
 
@@ -27,7 +32,9 @@ RMDIR := RMDIR /S/Q
 # All of the sources participating in the build are defined here
 -include sources.mk
 -include subdir_vars.mk
+-include ccs/subdir_vars.mk
 -include subdir_rules.mk
+-include ccs/subdir_rules.mk
 -include objects.mk
 
 ifneq ($(MAKECMDGOALS),clean)
@@ -140,7 +147,7 @@ BIN_OUTPUTS__QUOTED += \
 all: Crapstone_v1.out
 
 # Tool invocations
-Crapstone_v1.out: $(OBJS) $(CMD_SRCS) $(GEN_CMDS)
+Crapstone_v1.out: $(OBJS) $(CMD_SRCS) $(LIB_SRCS) $(GEN_CMDS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: MSP432 Linker'
 	"C:/ti/ccsv6/tools/compiler/ti-cgt-arm_15.12.7.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=FPv4SPD16 -me --advice:power=all -g --gcc --define=__MSP432P401R__ --define=TARGET_IS_MSP432P4XX --define=ccs --display_error_number --diag_wrap=off --diag_warning=225 --abi=eabi -z -m"Crapstone_v1.map" --stack_size=512 --heap_size=1024 -i"C:/ti/ccsv6/ccs_base/arm/include" -i"C:/ti/ccsv6/tools/compiler/ti-cgt-arm_15.12.7.LTS/lib" -i"C:/ti/ccsv6/tools/compiler/ti-cgt-arm_15.12.7.LTS/include" --reread_libs --display_error_number --warn_sections --diag_wrap=off --xml_link_info="Crapstone_v1_linkInfo.xml" --rom_model -o "Crapstone_v1.out" $(ORDERED_OBJS)
@@ -156,8 +163,8 @@ Crapstone_v1.hex: $(EXE_OUTPUTS)
 # Other Targets
 clean:
 	-$(RM) $(EXE_OUTPUTS__QUOTED)$(BIN_OUTPUTS__QUOTED)
-	-$(RM) "adc.d" "dac.d" "main.d" "startup_msp432p401r_ccs.d" "system_msp432p401r.d" 
-	-$(RM) "adc.obj" "dac.obj" "main.obj" "startup_msp432p401r_ccs.obj" "system_msp432p401r.obj" 
+	-$(RM) "adc.d" "cpu.d" "dac.d" "gpio.d" "interrupt.d" "main.d" "spi.d" "startup_msp432p401r_ccs.d" "system_msp432p401r.d" 
+	-$(RM) "adc.obj" "cpu.obj" "dac.obj" "gpio.obj" "interrupt.obj" "main.obj" "spi.obj" "startup_msp432p401r_ccs.obj" "system_msp432p401r.obj" 
 	-@echo 'Finished clean'
 	-@echo ' '
 

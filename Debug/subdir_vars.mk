@@ -8,43 +8,67 @@ CMD_SRCS += \
 
 C_SRCS += \
 ../adc.c \
+../cpu.c \
 ../dac.c \
+../gpio.c \
+../interrupt.c \
 ../main.c \
+../spi.c \
 ../startup_msp432p401r_ccs.c \
 ../system_msp432p401r.c 
 
 OBJS += \
 ./adc.obj \
+./cpu.obj \
 ./dac.obj \
+./gpio.obj \
+./interrupt.obj \
 ./main.obj \
+./spi.obj \
 ./startup_msp432p401r_ccs.obj \
 ./system_msp432p401r.obj 
 
 C_DEPS += \
 ./adc.d \
+./cpu.d \
 ./dac.d \
+./gpio.d \
+./interrupt.d \
 ./main.d \
+./spi.d \
 ./startup_msp432p401r_ccs.d \
 ./system_msp432p401r.d 
 
 C_DEPS__QUOTED += \
 "adc.d" \
+"cpu.d" \
 "dac.d" \
+"gpio.d" \
+"interrupt.d" \
 "main.d" \
+"spi.d" \
 "startup_msp432p401r_ccs.d" \
 "system_msp432p401r.d" 
 
 OBJS__QUOTED += \
 "adc.obj" \
+"cpu.obj" \
 "dac.obj" \
+"gpio.obj" \
+"interrupt.obj" \
 "main.obj" \
+"spi.obj" \
 "startup_msp432p401r_ccs.obj" \
 "system_msp432p401r.obj" 
 
 C_SRCS__QUOTED += \
 "../adc.c" \
+"../cpu.c" \
 "../dac.c" \
+"../gpio.c" \
+"../interrupt.c" \
 "../main.c" \
+"../spi.c" \
 "../startup_msp432p401r_ccs.c" \
 "../system_msp432p401r.c" 
 
