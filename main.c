@@ -27,6 +27,21 @@ volatile unsigned int middleval;
 volatile unsigned int ringval;
 volatile unsigned int pinkyval;
 
+/* SPI Master Configuration Parameter */
+const eUSCI_SPI_MasterConfig spiMasterConfig =
+{
+	EUSCI_B_SPI_CLOCKSOURCE_SMCLK, // ACLK Clock Source
+	/* Auxillary clock source, selectable LFXTBLK, VLOCLK, REFCLOCK, Max freq of 128kHz */
+	//32768, // ACLK = LFXT = 32.768khz
+	0,
+	500000, // SPICLK = 500khz
+	EUSCI_B_SPI_MSB_FIRST, // MSB First
+	EUSCI_B_SPI_PHASE_DATA_CHANGED_ONFIRST_CAPTURED_ON_NEXT, // Phase
+	EUSCI_B_SPI_CLOCKPOLARITY_INACTIVITY_HIGH, // Low polarity
+	EUSCI_B_SPI_3PIN // 3Wire SPI Mode
+};
+
+
 
 
 void main(void)
@@ -48,8 +63,6 @@ void main(void)
     	 //printf(" %d \n", pointerval);
 
     }
-
-
 }
 
 
