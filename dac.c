@@ -114,29 +114,29 @@ void sendDACinfo(unsigned int throttle, unsigned int yaw,
 		P3->OUT |= BIT0;
 	}
 }
-
-void EUSCIB0_IRQHandler(void)
-{
-    uint32_t status = SPI_getEnabledInterruptStatus(EUSCI_B0_BASE);
-    uint32_t jj;
-
-    SPI_clearInterruptFlag(EUSCI_B0_BASE, status);
-
-    if(status & EUSCI_B_SPI_RECEIVE_INTERRUPT)
-    {
-        /* USCI_B0 TX buffer ready? */
-        while (!(SPI_getInterruptStatus(EUSCI_B0_BASE, EUSCI_B_SPI_TRANSMIT_INTERRUPT)));
-
-        //RXData = SPI_receiveData(EUSCI_B0_BASE);
-
-        /* Send the next data packet */
-        //SPI_transmitData(EUSCI_B0_BASE, ++TXData);
-
-        /* Delay between transmissions for slave to process information */
-        for(jj=50;jj<50;jj++);
-    }
-
-}
+//
+//void EUSCIB0_IRQHandler(void)
+//{
+//    uint32_t status = SPI_getEnabledInterruptStatus(EUSCI_B0_BASE);
+//    uint32_t jj;
+//
+//    SPI_clearInterruptFlag(EUSCI_B0_BASE, status);
+//
+//    if(status & EUSCI_B_SPI_RECEIVE_INTERRUPT)
+//    {
+//        /* USCI_B0 TX buffer ready? */
+//        while (!(SPI_getInterruptStatus(EUSCI_B0_BASE, EUSCI_B_SPI_TRANSMIT_INTERRUPT)));
+//
+//        //RXData = SPI_receiveData(EUSCI_B0_BASE);
+//
+//        /* Send the next data packet */
+//        //SPI_transmitData(EUSCI_B0_BASE, ++TXData);
+//
+//        /* Delay between transmissions for slave to process information */
+//        for(jj=50;jj<50;jj++);
+//    }
+//
+//}
 
 
 
