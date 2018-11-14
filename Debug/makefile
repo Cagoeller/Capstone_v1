@@ -10,6 +10,7 @@ GEN_OPTS__FLAG :=
 GEN_CMDS__FLAG := 
 
 ORDERED_OBJS += \
+"./acl.obj" \
 "./adc.obj" \
 "./cpu.obj" \
 "./dac.obj" \
@@ -163,8 +164,8 @@ Crapstone_v1.hex: $(EXE_OUTPUTS)
 # Other Targets
 clean:
 	-$(RM) $(EXE_OUTPUTS__QUOTED)$(BIN_OUTPUTS__QUOTED)
-	-$(RM) "adc.d" "cpu.d" "dac.d" "gpio.d" "interrupt.d" "main.d" "spi.d" "startup_msp432p401r_ccs.d" "system_msp432p401r.d" 
-	-$(RM) "adc.obj" "cpu.obj" "dac.obj" "gpio.obj" "interrupt.obj" "main.obj" "spi.obj" "startup_msp432p401r_ccs.obj" "system_msp432p401r.obj" 
+	-$(RM) "acl.d" "adc.d" "cpu.d" "dac.d" "gpio.d" "interrupt.d" "main.d" "spi.d" "startup_msp432p401r_ccs.d" "system_msp432p401r.d" 
+	-$(RM) "acl.obj" "adc.obj" "cpu.obj" "dac.obj" "gpio.obj" "interrupt.obj" "main.obj" "spi.obj" "startup_msp432p401r_ccs.obj" "system_msp432p401r.obj" 
 	-@echo 'Finished clean'
 	-@echo ' '
 

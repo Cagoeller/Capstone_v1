@@ -7,6 +7,7 @@ CMD_SRCS += \
 ../msp432p401r.cmd 
 
 C_SRCS += \
+../acl.c \
 ../adc.c \
 ../cpu.c \
 ../dac.c \
@@ -18,6 +19,7 @@ C_SRCS += \
 ../system_msp432p401r.c 
 
 OBJS += \
+./acl.obj \
 ./adc.obj \
 ./cpu.obj \
 ./dac.obj \
@@ -29,6 +31,7 @@ OBJS += \
 ./system_msp432p401r.obj 
 
 C_DEPS += \
+./acl.d \
 ./adc.d \
 ./cpu.d \
 ./dac.d \
@@ -40,6 +43,7 @@ C_DEPS += \
 ./system_msp432p401r.d 
 
 C_DEPS__QUOTED += \
+"acl.d" \
 "adc.d" \
 "cpu.d" \
 "dac.d" \
@@ -51,6 +55,7 @@ C_DEPS__QUOTED += \
 "system_msp432p401r.d" 
 
 OBJS__QUOTED += \
+"acl.obj" \
 "adc.obj" \
 "cpu.obj" \
 "dac.obj" \
@@ -62,6 +67,7 @@ OBJS__QUOTED += \
 "system_msp432p401r.obj" 
 
 C_SRCS__QUOTED += \
+"../acl.c" \
 "../adc.c" \
 "../cpu.c" \
 "../dac.c" \

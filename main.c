@@ -7,6 +7,7 @@
 #include "msp.h"
 #include "adc.h"
 #include "dac.h"
+#include "acl.h"
 #include "spi.h"
 #include <stdint.h>
 
@@ -50,14 +51,22 @@ void main(void)
     WDTCTL = WDTPW | WDTHOLD;           // Stop watchdog timer
 	ConfigureADC();
 
-	initializeSPIDAC();
+	//initializeSPIDAC();
 	//sendByteDAC(0x55);
+	initializeSPIACL();
     __enable_irq();
 
     while(1){
     	//endDACinfo(0x01, 0x05,0x50, 0x3C);
 		//sendByteDAC(0xff);
-		sendByteDAC(0x23);
+    	P5->OUT &= ~BIT0;
+    	EUSCI_B_SPI_transmitData(EUSCI_B2_BASE, (0x80 | 0x02)); // y address
+
+    	EUSCI_B_SPI_transmitData(EUSCI_B2_BASE, 0x0F);
+    	//EUSCI_B_SPI_transmitData(EUSCI_B2_BASE, 0x00);
+    	//EUSCI_B_SPI_transmitData(EUSCI_B2_BASE, 0x00);
+    	P5->OUT |= BIT0;
+		//sendByteDAC(0x23);
 //    	 ADC14->CTL0 |= ADC14_CTL0_ENC |
 //    	     ADC14_CTL0_SC;				// Enable the adc and start conversion
     	 //printf(" %d \n", pointerval);
