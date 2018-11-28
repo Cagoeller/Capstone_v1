@@ -37,8 +37,8 @@ void initializeSPIDAC(void){
 	SPI_enableModule(EUSCI_B0_BASE);
 	EUSCI_B_SPI_masterChangeClock(EUSCI_B0_BASE, 500000,500000);
 	/* Enabling interrupts */
-	SPI_enableInterrupt(EUSCI_B0_BASE, EUSCI_B_SPI_TRANSMIT_INTERRUPT);
-	Interrupt_enableInterrupt(INT_EUSCIB0);
+	//SPI_enableInterrupt(EUSCI_B0_BASE, EUSCI_B_SPI_TRANSMIT_INTERRUPT);
+	//Interrupt_enableInterrupt(INT_EUSCIB0);
 
 	int i;
 	for(i=0;i<1000;i++);
