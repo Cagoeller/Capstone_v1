@@ -92,7 +92,8 @@ void ADC14_IRQHandler(void){
         middlesum  	-= middle[index];
         ringsum    	-= ring[index];
         pinkysum 	-= pinky[index];
-
+        ADC14->CTL0 &= ~(ADC14_CTL0_ENC | ADC14_CTL0_SC);
+        //ADC14->IFGR0 &= ~ADC14_IFGR0_IFG3;
 
     }
 }

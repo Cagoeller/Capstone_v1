@@ -63,31 +63,31 @@ void main(void)
     while(1){
     	//endDACinfo(0x01, 0x05,0x50, 0x3C);
 		//sendByteDAC(0xff);
-        P3->OUT &= ~BIT0;
-
-        sendByteDAC(0x30);
-        sendByteDAC(0x00);
-        sendByteDAC(0x00);
-        P3->OUT |= BIT0;
-
-        P3->OUT &= ~BIT0;
-        sendByteDAC(0x31);
-        sendByteDAC(0xff);
-        sendByteDAC(0xff);
-        P3->OUT |= BIT0;
-
-        P3->OUT &= ~BIT0;
-        sendByteDAC(0x32);
-        sendByteDAC(0x00);
-        sendByteDAC(0xff);
-        P3->OUT |= BIT0;
-
-        P3->OUT &= ~BIT0;
-        sendByteDAC(0x33);
-        sendByteDAC(0x00);
-        sendByteDAC(0x0f);
-        P3->OUT |= BIT0;
-        for(ii=0; ii <1000 ; ii++);
+//        P3->OUT &= ~BIT0;
+//
+//        sendByteDAC(0x30);
+//        sendByteDAC(0x00);
+//        sendByteDAC(0x00);
+//        P3->OUT |= BIT0;
+//
+//        P3->OUT &= ~BIT0;
+//        sendByteDAC(0x31);
+//        sendByteDAC(0xff);
+//        sendByteDAC(0xff);
+//        P3->OUT |= BIT0;
+//
+//        P3->OUT &= ~BIT0;
+//        sendByteDAC(0x32);
+//        sendByteDAC(0x00);
+//        sendByteDAC(0xff);
+//        P3->OUT |= BIT0;
+//
+//        P3->OUT &= ~BIT0;
+//        sendByteDAC(0x33);
+//        sendByteDAC(0x00);
+//        sendByteDAC(0x0f);
+//        P3->OUT |= BIT0;
+//        for(ii=0; ii <1000 ; ii++);
     	/*
     	P5->OUT &= ~BIT0;
     	EUSCI_B_SPI_transmitData(EUSCI_B2_BASE, (0x80 | 0x02)); // y address
@@ -98,8 +98,8 @@ void main(void)
     	P5->OUT |= BIT0;
     	*/
 		//sendByteDAC(0x23);
-//    	ADC14->CTL0 |= ADC14_CTL0_ENC |
-//    	     ADC14_CTL0_SC;				// Enable the adc and start conversion
+    	ADC14->CTL0 |= ADC14_CTL0_ENC |
+    	     ADC14_CTL0_SC;				// Enable the adc and start conversion
 
     }
 }
