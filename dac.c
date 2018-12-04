@@ -61,8 +61,9 @@ void sendByteDAC(unsigned int val){
 
 void sendDACinfo(unsigned int throttle, unsigned int yaw,
 		unsigned int roll, unsigned int pitch){
-	unsigned int command = 0x00;
-	unsigned int front; unsigned int back;
+
+	unsigned int command = 0x30;
+//	unsigned int front; unsigned int back;
 	unsigned int source;
 	int i = 0;
 	for(i = 0; i < 4; i++){
@@ -76,28 +77,24 @@ void sendDACinfo(unsigned int throttle, unsigned int yaw,
 //		}
 		if(i==0){
 			source = throttle;
-			command = 0x00;
 		}
 		else if( i==1){
 			source = yaw;
-			command = 0x01;
 		}
 		else if (i == 2){
 			source = roll;
-			command = 0x02;
 		}
 		else if (i == 3){
-			command |= 0x23;
 			source = pitch;
 		}
 		P3->OUT &= ~BIT0;
 
-		front = source >>6;					// 14 bit depth
-		back = source << 2;
+//		front = source >>6;					// 14 bit depth
+//		back = source << 2;
 		//back  = source;
-		sendByteDAC(command);
-		sendByteDAC(front);
-		sendByteDAC(back);
+		sendByteDAC(command | i);
+		sendByteDAC(source >> 6);
+		sendByteDAC(source << 2);
 //		int j;
 //		for(j=0; j < 6; j++){
 //			if(source & 0x20 == 0){
@@ -110,7 +107,7 @@ void sendDACinfo(unsigned int throttle, unsigned int yaw,
 //				source = source >>1;
 //				P1->OUT &= ~BIT5;
 //		}
-		command++;
+		//command++;
 		P3->OUT |= BIT0;
 	}
 }
