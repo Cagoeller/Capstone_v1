@@ -30,6 +30,7 @@
 void initializeSPIACL(void);
 
 void sendByteACL(unsigned int val);
+unsigned char receiveByteACL(void);
 
 
 

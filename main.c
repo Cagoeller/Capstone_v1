@@ -11,6 +11,7 @@
 #include "spi.h"
 #include <stdint.h>
 
+unsigned char RXData;
 
 volatile unsigned int pointer[Num_of_Results];
 volatile unsigned int middle[Num_of_Results];
@@ -45,21 +46,40 @@ const eUSCI_SPI_MasterConfig spiMasterConfig =
 
 
 
-void main(void)
-{
-	
+void main(void){
     WDTCTL = WDTPW | WDTHOLD;           // Stop watchdog timer
 	ConfigureADC();
-
 	initializeSPIDAC();
 	ConfigureADC();
 	//sendByteDAC(0x55);
 	initializeSPIACL();
     __enable_irq();
+
     int ii = 0;
+    int z = 0;
     int mid = 0x01 << 13;
 
+    P5->OUT &= ~BIT0;
+    sendByteACL(0xFF);
+    receiveByteACL();
+    P5->OUT |= BIT0;
 
+    P5->OUT &= ~BIT0;
+    sendByteACL(0x7E);
+    sendByteACL(0x11);
+    P5->OUT |= BIT0;
+
+//    for(z = 0; z < 1;z++);
+
+    P5->OUT &= ~BIT0;
+    sendByteACL(0x7E);
+    sendByteACL(0x15);
+    P5->OUT |= BIT0;
+
+    P5->OUT &= ~BIT0;
+    sendByteACL(0x65);
+    sendByteACL(0x10);
+    P5->OUT |= BIT0;
 
     while(1){
     	ii = (pointerval-2800)<<2;
@@ -82,6 +102,13 @@ void main(void)
     	*/
 		//sendByteDAC(0x23);
     	ADC14->CTL0 |= ADC14_CTL0_ENC | ADC14_CTL0_SC;				// Enable the adc and start conversion
+
+        P5->OUT &= ~BIT0;
+        sendByteACL(0x90);
+        RXData = receiveByteACL();
+        P5->OUT |= BIT0;
+
+//        for(z = 0; z < 1;z++);
 
     }
 }
