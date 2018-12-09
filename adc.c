@@ -53,10 +53,10 @@ void ConfigureADC(void){
 	     * P4.2 -> A11 (2)
 	     * P4.4 -> A9  (1)
 	     */
-	    ADC14->MCTL[0] = ADC14_MCTLN_INCH_9;    // ref+=AVcc, channel =  A9				PP4.4
-	    ADC14->MCTL[1] = ADC14_MCTLN_INCH_11;    // ref+=AVcc, channel = A11			P4.2
-	    ADC14->MCTL[2] = ADC14_MCTLN_INCH_13;    // ref+=AVcc, channel = A13			P4.0
-	    ADC14->MCTL[3] = ADC14_MCTLN_INCH_14|    // ref+=AVcc, channel = A14, end seq.	P6.1
+	    ADC14->MCTL[0] = ADC14_MCTLN_INCH_14;    // ref+=AVcc, channel =  A9				PP4.4
+	    ADC14->MCTL[1] = ADC14_MCTLN_INCH_13;    // ref+=AVcc, channel = A11			P4.2
+	    ADC14->MCTL[2] = ADC14_MCTLN_INCH_11;    // ref+=AVcc, channel = A13			P4.0
+	    ADC14->MCTL[3] = ADC14_MCTLN_INCH_9|    // ref+=AVcc, channel = A14, end seq.	P6.1
 	            ADC14_MCTLN_EOS;
 
 	    ADC14->IER0 = ADC14_IER0_IE3;           // Enable ADC14IFG.3

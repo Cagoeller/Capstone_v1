@@ -57,7 +57,11 @@ void main(void){
 
     int ii = 0;
     int z = 0;
-    int mid = 0x01 << 13;
+    int throttle = 0x00 << 13;
+    int yaw = 0x01 << 13;
+    int roll = 0x01 << 13;
+    int pitch = 0x01 << 13;
+    int mid = 8192;
 
     P5->OUT &= ~BIT0;
     sendByteACL(0xFF);
@@ -76,21 +80,58 @@ void main(void){
     sendByteACL(0x15);
     P5->OUT |= BIT0;
 
-    P5->OUT &= ~BIT0;
-    sendByteACL(0x65);
-    sendByteACL(0x10);
-    P5->OUT |= BIT0;
+//    P5->OUT &= ~BIT0;
+//    sendByteACL(0x65);
+//    sendByteACL(0x10);
+//    P5->OUT |= BIT0;
+
+//    P5->OUT &= ~BIT0;
+//    sendByteACL(0x66);
+//    sendByteACL(0x48);
+//    P5->OUT |= BIT0;
 
     while(1){
-    	ii = (pointerval-2800)<<2;
+    	throttle = (pointerval-5500)<<1;   //Sets to zero
+    	yaw = (middleval-2505);            //3
+    	roll = (ringval-2100);                  //
+    	pitch = (pinkyval-2505);                //
 
+    	if(yaw > (mid-1000) && yaw < (mid+1000)){
+    	    yaw = mid;
+    	}
+    	else if(yaw < (mid-1000)){
+    	    yaw += 1000;
+    	}
+    	else{
+    	    yaw -= 1000;
+    	}
+        if(roll > (mid-1500) && roll < (mid+500)){
+            roll = mid;
+        }
+        else if(roll < (mid-1500)){
+            roll += 1500;
+        }
+        else{
+            roll -= 500;
+        }
+        if(pitch > (mid-2000) && pitch < (mid-1000)){
+            pitch = mid;
+        }
+        else if(pitch < (mid-2000)){
+            pitch += 2000;
+        }
+        else{
+            pitch += 1000;
+        }
+        if(throttle > 16380){
+            throttle = 16380;
+        }
 //        P3->OUT &= ~BIT0;
-//
 //        sendByteDAC(0x30);
 //        sendByteDAC(ii >> 6);
 //        sendByteDAC(ii << 2);
 //        P3->OUT |= BIT0;
-    	sendDACinfo(ii, mid,mid,mid);
+    	sendDACinfo(throttle,yaw,roll,pitch);
     	/*
     	P5->OUT &= ~BIT0;
     	EUSCI_B_SPI_transmitData(EUSCI_B2_BASE, (0x80 | 0x02)); // y address
@@ -104,7 +145,7 @@ void main(void){
     	ADC14->CTL0 |= ADC14_CTL0_ENC | ADC14_CTL0_SC;				// Enable the adc and start conversion
 
         P5->OUT &= ~BIT0;
-        sendByteACL(0x90);
+        sendByteACL(0xE5);
         RXData = receiveByteACL();
         P5->OUT |= BIT0;
 
