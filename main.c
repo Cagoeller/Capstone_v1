@@ -11,7 +11,14 @@
 #include "spi.h"
 #include <stdint.h>
 
-unsigned char RXData;
+unsigned char x_7_0;
+unsigned char x_15_8;
+unsigned char y_7_0;
+unsigned char y_15_8;
+unsigned char z_7_0;
+unsigned char z_15_8;
+
+int accel_z[100];
 
 volatile unsigned int pointer[Num_of_Results];
 volatile unsigned int middle[Num_of_Results];
@@ -28,6 +35,8 @@ volatile unsigned int pointerval;
 volatile unsigned int middleval;
 volatile unsigned int ringval;
 volatile unsigned int pinkyval;
+volatile unsigned short middleset;
+volatile unsigned int ringset;
 
 /* SPI Master Configuration Parameter */
 const eUSCI_SPI_MasterConfig spiMasterConfig =
@@ -55,8 +64,8 @@ void main(void){
 	initializeSPIACL();
     __enable_irq();
 
-    int ii = 0;
-    int z = 0;
+//    int ii = 0;
+//    int z = 0;
     int throttle = 0x00 << 13;
     int yaw = 0x01 << 13;
     int roll = 0x01 << 13;
@@ -92,64 +101,79 @@ void main(void){
 
     while(1){
     	throttle = (pointerval-5500)<<1;   //Sets to zero
-    	yaw = (middleval-2505);            //3
-    	roll = (ringval-2100);                  //
-    	pitch = (pinkyval-2505);                //
+//    	yaw = (middleval-2505);            //3
+//    	roll = (ringval-2100);                  //
+//    	pitch = (pinkyval-2505);                //
+        middleset = (middleval);            //3
+        ringset = (ringval);
 
-    	if(yaw > (mid-1000) && yaw < (mid+1000)){
-    	    yaw = mid;
+        if((middleset >= 9200)){
+    	    yaw = 16383 - middleset;
     	}
-    	else if(yaw < (mid-1000)){
-    	    yaw += 1000;
+    	else if((ringset >= 7900)){
+    	    yaw = ringset;
     	}
     	else{
-    	    yaw -= 1000;
+    	    yaw = mid;
     	}
-        if(roll > (mid-1500) && roll < (mid+500)){
-            roll = mid;
-        }
-        else if(roll < (mid-1500)){
-            roll += 1500;
-        }
-        else{
-            roll -= 500;
-        }
-        if(pitch > (mid-2000) && pitch < (mid-1000)){
-            pitch = mid;
-        }
-        else if(pitch < (mid-2000)){
-            pitch += 2000;
-        }
-        else{
-            pitch += 1000;
-        }
+//        if(roll > (mid-1500) && roll < (mid+500)){
+//            roll = mid;
+//        }
+//        else if(roll < (mid-1500)){
+//            roll += 1500;
+//        }
+//        else{
+//            roll -= 500;
+//        }
+//        if(pitch > (mid-2000) && pitch < (mid-1000)){
+//            pitch = mid;
+//        }
+//        else if(pitch < (mid-2000)){
+//            pitch += 2000;
+//        }
+//        else{
+//            pitch += 1000;
+//        }
         if(throttle > 16380){
             throttle = 16380;
         }
-//        P3->OUT &= ~BIT0;
-//        sendByteDAC(0x30);
-//        sendByteDAC(ii >> 6);
-//        sendByteDAC(ii << 2);
-//        P3->OUT |= BIT0;
-    	sendDACinfo(throttle,yaw,roll,pitch);
-    	/*
-    	P5->OUT &= ~BIT0;
-    	EUSCI_B_SPI_transmitData(EUSCI_B2_BASE, (0x80 | 0x02)); // y address
 
-    	EUSCI_B_SPI_transmitData(EUSCI_B2_BASE, 0x0F);
-    	//EUSCI_B_SPI_transmitData(EUSCI_B2_BASE, 0x00);
-    	//EUSCI_B_SPI_transmitData(EUSCI_B2_BASE, 0x00);
-    	P5->OUT |= BIT0;
-    	*/
-		//sendByteDAC(0x23);
+//    	sendDACinfo(throttle,yaw,roll,pitch);
+
     	ADC14->CTL0 |= ADC14_CTL0_ENC | ADC14_CTL0_SC;				// Enable the adc and start conversion
 
         P5->OUT &= ~BIT0;
-        sendByteACL(0xE5);
-        RXData = receiveByteACL();
+        sendByteACL(0x92);
+        x_7_0 = receiveByteACL();
+        x_15_8 = receiveByteACL();
+        y_7_0 = receiveByteACL();
+        y_15_8 = receiveByteACL();
+        z_7_0 = receiveByteACL();
+        z_15_8 = receiveByteACL();
         P5->OUT |= BIT0;
 
+        unsigned short X_val = (x_15_8<<8) | x_7_0;
+        unsigned short Y_val = (y_15_8<<8) | y_7_0;
+        unsigned short Z_val = (z_15_8<<8) | z_7_0;
+        int fyck =0;
+
+
+        if((49151 < X_val <= 65535)){     //LEFT
+            roll = (X_val + 16383)>>1;
+        }
+        else if((0 < X_val < 16384)){                                   //RIGHT
+            roll = (X_val>>1) + mid;
+        }
+
+        if((49151 < Y_val <= 65535)){     //BACK
+            pitch = (Y_val + 16383)>>1;
+        }
+        else if((0 < Y_val < 16384)){                                   //FORWARD
+            pitch = (Y_val>>1) + mid;
+        }
 //        for(z = 0; z < 1;z++);
+        sendDACinfo(throttle,yaw,roll,pitch);
+
 
     }
 }
