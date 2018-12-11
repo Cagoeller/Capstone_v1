@@ -111,7 +111,13 @@ void main(void){
     	    yaw = 16383 - middleset;
     	}
     	else if((ringset >= 7900)){
-    	    yaw = ringset;
+    	    unsigned short temp = 7900 + ((ringset - 7900)<<1);
+    	    if(temp > 16383){
+    	        yaw = 16383;
+    	    }
+    	    else{
+    	        yaw = temp;
+    	    }
     	}
     	else{
     	    yaw = mid;
@@ -158,17 +164,32 @@ void main(void){
         int fyck =0;
 
 
-        if((49151 < X_val <= 65535)){     //LEFT
+        if((49151 < X_val) && (X_val <= 65535)){     //LEFT
             roll = (X_val + 16383)>>1;
         }
-        else if((0 < X_val < 16384)){                                   //RIGHT
-            roll = (X_val>>1) + mid;
-        }
+        else if((0 <= X_val) && (X_val < 20000)){
+            if(Z_val > 40000){
+                roll = 16383;               //RIGHT
+            }
+            else{
+                roll = (X_val>>1) + mid;
+                if(roll > 16383){
+                    roll = 16383;
+                }
+            }
 
-        if((49151 < Y_val <= 65535)){     //BACK
+        }
+//        if(Z_val >= 35000){
+//            roll = 16383 - (X_val>>1);        //Right
+//        }
+//        else if(Z_val < 35000){
+//            roll = X_val>>1;                //LEFT
+//        }
+
+        if((49151 < Y_val) && (Y_val <= 65535)){     //BACK
             pitch = (Y_val + 16383)>>1;
         }
-        else if((0 < Y_val < 16384)){                                   //FORWARD
+        else if((0 < Y_val) && (Y_val < 16384)){                                   //FORWARD
             pitch = (Y_val>>1) + mid;
         }
 //        for(z = 0; z < 1;z++);
